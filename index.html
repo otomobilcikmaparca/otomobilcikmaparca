@@ -279,15 +279,15 @@
 <!-- HERO -->
 <section class="hero">
   <video
-    id="heroVideo"
-    muted
-    playsinline
-    preload="auto"
-    poster="images/video-poster.jpg"
-    style="display: none;"
-  >
-    <source src="cikma-oto-parca-bg.mp4" type="video/mp4" />
-  </video>
+  id="heroVideo"
+  muted
+  playsinline
+  preload="metadata"
+  poster="images/video-poster.jpg"
+  style="display: none;"
+>
+  <source src="cikma-oto-parca-bg.mp4" type="video/mp4" />
+</video>
   <div class="hero-content">
 
     <img src="logo.png" alt="Otomobil Çıkma Parça Logo" />
@@ -394,40 +394,40 @@
 
 <!-- JS -->
 <script>
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
   document.addEventListener("DOMContentLoaded", function () {
     const video = document.getElementById("heroVideo");
+
     if (!video) return;
 
+    // Mobil cihazları tespit et
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (isMobile) {
-      // Mobilde video tamamen kaldırılır
-      video.remove();
+      video.remove(); // mobilde video yüklenmesin
       return;
     }
 
-    const checkBuffered = setInterval(() => {
-      if (video.buffered.length > 0) {
-        const end = video.buffered.end(0);
-        if (end >= 50) {
-          clearInterval(checkBuffered);
-          video.style.display = "block";
-          video.currentTime = 30;
-          video.playbackRate = 1.5;
-          video.style.opacity = 0.4;
+    // Metadata yüklendiğinde videoyu 30. saniyeye al
+    video.addEventListener("loadedmetadata", function () {
+      video.currentTime = 30;
+    });
 
-          video.play().catch(e =>
-            console.warn("Autoplay error:", e)
-          );
+    // Video oynatılabilir hale geldiğinde oynat
+    video.addEventListener("canplay", function () {
+      video.style.display = "block";
+      video.playbackRate = 1.5;
+      video.style.opacity = 0.4;
 
-          video.addEventListener("timeupdate", function () {
-            if (video.currentTime >= 50) {
-              video.currentTime = 30;
-            }
-          });
-        }
+      video.play().catch((e) => {
+        console.warn("Otomatik oynatma hatası:", e);
+      });
+    });
+
+    // 50. saniyeye gelince videoyu durdur
+    video.addEventListener("timeupdate", function () {
+      if (video.currentTime >= 50) {
+        video.pause();
       }
-    }, 500); // 0.5 saniyede bir video'nun buffer'ını kontrol et
+    });
   });
 </script>
 <script type="application/ld+json">
