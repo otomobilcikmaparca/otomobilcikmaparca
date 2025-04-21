@@ -387,21 +387,24 @@
 <!-- JS -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const video = document.querySelector(".hero video");
-    if (video) {
-      video.playbackRate = 2.5;
-      video.currentTime = 25;
-      video.play();
+  const video = document.getElementById("heroVideo");
+  if (video) {
+    video.currentTime = 30;
+    video.playbackRate = 1.5;
+    video.play();
 
-      video.addEventListener('timeupdate', function () {
-        // Eğer video sona yaklaştıysa başa sar ve tekrar 25. saniyeden başlat
-        if (video.currentTime >= video.duration - 0.3) {
-          video.currentTime = 25;
-          video.play();
-        }
-      });
-    }
-  });
+    video.addEventListener("timeupdate", function () {
+      if (video.currentTime >= 50) {
+        video.currentTime = 30;
+        video.play();
+      }
+    });
+
+    video.addEventListener("canplay", function () {
+      video.style.opacity = 0.4;
+    });
+  }
+});
 </script>
 <script type="application/ld+json">
 {
