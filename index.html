@@ -386,23 +386,34 @@
 
 <!-- JS -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const video = document.getElementById("heroVideo");
-  if (video) {
-    video.addEventListener("canplay", function () {
-      video.currentTime = 30;
-      video.playbackRate = 1.5;
-      video.play().catch(e => console.warn("Autoplay error:", e));
-      video.style.opacity = 0.4;
-    });
-
-    video.addEventListener("timeupdate", function () {
-      if (video.currentTime >= 50) {
-        video.currentTime = 30;
+  document.addEventListener("DOMContentLoaded", function () {
+    // Eğer ekran genişliği mobil boyutlardaysa
+    if (window.innerWidth <= 768) {
+      const video = document.getElementById("heroVideo");
+      if (video) {
+        video.parentElement.removeChild(video);
       }
-    });
-  }
-});
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("heroVideo");
+    if (video) {
+      video.addEventListener("canplay", function () {
+        video.currentTime = 30;
+        video.playbackRate = 1.5;
+        video.play().catch(e => console.warn("Autoplay error:", e));
+        video.style.opacity = 0.4;
+      });
+
+      video.addEventListener("timeupdate", function () {
+        if (video.currentTime >= 50) {
+          video.currentTime = 30;
+        }
+      });
+    }
+  });
 </script>
 <script type="application/ld+json">
 {
