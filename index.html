@@ -386,20 +386,16 @@
 
 <!-- JS -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Eğer ekran genişliği mobil boyutlardaysa
-    if (window.innerWidth <= 768) {
-      const video = document.getElementById("heroVideo");
-      if (video) {
-        video.parentElement.removeChild(video);
-      }
-    }
-  });
-</script>
-<script>
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   document.addEventListener("DOMContentLoaded", function () {
     const video = document.getElementById("heroVideo");
-    if (video) {
+
+    if (!video) return;
+
+    if (isMobile) {
+      video.parentElement.removeChild(video);
+    } else {
       video.addEventListener("canplay", function () {
         video.currentTime = 30;
         video.playbackRate = 1.5;
@@ -415,6 +411,7 @@
     }
   });
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
