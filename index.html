@@ -282,7 +282,7 @@
     id="heroVideo"
     muted
     playsinline
-    preload="metadata"
+    preload="auto"
     poster="images/video-poster.jpg"
     style="display: none;"
   >
@@ -398,44 +398,36 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     const video = document.getElementById("heroVideo");
-
     if (!video) return;
 
     if (isMobile) {
+      // Mobilde video tamamen kaldırılır
       video.remove();
       return;
     }
 
-    let checkBufferInterval;
+    const checkBuffered = setInterval(() => {
+      if (video.buffered.length > 0) {
+        const end = video.buffered.end(0);
+        if (end >= 50) {
+          clearInterval(checkBuffered);
+          video.style.display = "block";
+          video.currentTime = 30;
+          video.playbackRate = 1.5;
+          video.style.opacity = 0.4;
 
-    video.addEventListener("loadedmetadata", function () {
-      checkBufferInterval = setInterval(() => {
-        const buffered = video.buffered;
+          video.play().catch(e =>
+            console.warn("Autoplay error:", e)
+          );
 
-        if (buffered.length > 0) {
-          const bufferedEnd = buffered.end(0);
-
-          if (bufferedEnd >= 50) {
-            clearInterval(checkBufferInterval);
-
-            video.style.display = "block"; // videoyu görünür yap
-            video.currentTime = 30;
-            video.playbackRate = 1.5;
-            video.style.opacity = 0.4;
-
-            video.play().catch((e) =>
-              console.warn("Autoplay error:", e)
-            );
-
-            video.addEventListener("timeupdate", function () {
-              if (video.currentTime >= 50) {
-                video.currentTime = 30;
-              }
-            });
-          }
+          video.addEventListener("timeupdate", function () {
+            if (video.currentTime >= 50) {
+              video.currentTime = 30;
+            }
+          });
         }
-      }, 500); // yarım saniyede bir kontrol et
-    });
+      }
+    }, 500); // 0.5 saniyede bir video'nun buffer'ını kontrol et
   });
 </script>
 <script type="application/ld+json">
