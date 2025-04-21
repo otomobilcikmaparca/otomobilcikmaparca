@@ -396,8 +396,14 @@
     if (isMobile) {
       video.parentElement.removeChild(video);
     } else {
+      // 30. saniyeye seek işlemini sadece buffer uygunsa yap
+      video.addEventListener("loadedmetadata", function () {
+        if (video.duration > 30) {
+          video.currentTime = 30;
+        }
+      });
+
       video.addEventListener("canplay", function () {
-        video.currentTime = 30;
         video.playbackRate = 1.5;
         video.play().catch(e => console.warn("Autoplay error:", e));
         video.style.opacity = 0.4;
