@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://otomobilcikmaparca.com/sitemap.xml
