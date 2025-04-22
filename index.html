@@ -221,12 +221,7 @@
     }
 
     .sticky-whatsapp {
-      width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-position: fixed;
+      position: fixed;
       bottom: 20px;
       right: 20px;
       background-color: #25D366;
@@ -247,12 +242,7 @@ position: fixed;
     }
 
     .sticky-call {
-width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;      
-position: fixed;
+      position: fixed;
       bottom: 90px;
       right: 20px;
       background-color: #2196f3;
@@ -273,24 +263,16 @@ position: fixed;
     }
 
     @media (max-width: 768px) {
-  .hero {
-    background-image: url('images/video-poster.jpg') !important;
-    background-size: cover;
-    background-position: center;
-  }
-}
+      .kategori-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
 
     @media (max-width: 480px) {
-  .sticky-whatsapp,
-  .sticky-call {
-    right: 10px;
-    bottom: 10px; /* whatsapp için daha rahat konum */
-  }
-
-  .sticky-call {
-    bottom: 70px; /* üst üste binmemesi için */
-  }
-}
+      .kategori-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -303,7 +285,6 @@ position: fixed;
   preload="metadata"
   poster="images/video-poster.jpg"
   style="display: none;"
-  data-mobile-poster="images/video-poster-mobil.jpg"
 >
   <source src="cikma-oto-parca-bg.mp4" type="video/mp4" />
 </video>
@@ -418,25 +399,19 @@ position: fixed;
 
     if (!video) return;
 
+    // Mobil cihazları tespit et
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     if (isMobile) {
-      // Mobil cihazda farklı posteri ayarla
-      const mobilePoster = video.getAttribute("data-mobile-poster");
-      if (mobilePoster) {
-        video.setAttribute("poster", mobilePoster);
-      }
-
-      // Video tamamen gizlensin, sadece poster gösterilsin
-      video.style.display = "block";
+      video.remove(); // mobilde video yüklenmesin
       return;
     }
 
-    // Masaüstünde video 30–50 saniye arasında oynat
+    // Metadata yüklendiğinde videoyu 30. saniyeye al
     video.addEventListener("loadedmetadata", function () {
       video.currentTime = 30;
     });
 
+    // Video oynatılabilir hale geldiğinde oynat
     video.addEventListener("canplay", function () {
       video.style.display = "block";
       video.playbackRate = 1.5;
@@ -447,6 +422,7 @@ position: fixed;
       });
     });
 
+    // 50. saniyeye gelince videoyu durdur
     video.addEventListener("timeupdate", function () {
       if (video.currentTime >= 50) {
         video.pause();
