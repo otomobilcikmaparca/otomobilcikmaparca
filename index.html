@@ -221,7 +221,12 @@
     }
 
     .sticky-whatsapp {
-      position: fixed;
+      width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+position: fixed;
       bottom: 20px;
       right: 20px;
       background-color: #25D366;
@@ -242,7 +247,12 @@
     }
 
     .sticky-call {
-      position: fixed;
+width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;      
+position: fixed;
       bottom: 90px;
       right: 20px;
       background-color: #2196f3;
@@ -263,16 +273,24 @@
     }
 
     @media (max-width: 768px) {
-      .kategori-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+  .hero {
+    background-image: url('images/video-poster.jpg') !important;
+    background-size: cover;
+    background-position: center;
+  }
+}
 
     @media (max-width: 480px) {
-      .kategori-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+  .sticky-whatsapp,
+  .sticky-call {
+    right: 10px;
+    bottom: 10px; /* whatsapp için daha rahat konum */
+  }
+
+  .sticky-call {
+    bottom: 70px; /* üst üste binmemesi için */
+  }
+}
   </style>
 </head>
 <body>
