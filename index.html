@@ -220,55 +220,58 @@
       color: #777;
     }
 
-    .sticky-button {
-  position: fixed;
-  right: 16px;
-  z-index: 999;
-  border-radius: 50%;
-  padding: 10px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-  background-color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.sticky-button img {
-  width: 36px;
-  height: 36px;
-  display: block;
-}
+    .sticky-whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      border-radius: 50%;
+      padding: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      z-index: 999;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .sticky-whatsapp:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    .sticky-whatsapp img {
+      width: 36px;
+      height: 36px;
+      display: block;
+    }
 
-.sticky-whatsapp {
-  bottom: 20px;
-  background-color: #25D366;
-}
-.sticky-call {
-  bottom: 80px;
-  background-color: #2196f3;
-}
-
-.sticky-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-}
-
-@media (max-width: 480px) {
-  .sticky-button {
-    right: 12px;
-    padding: 8px;
-  }
-  .sticky-button img {
-    width: 30px;
-    height: 30px;
-  }
-}
+    .sticky-call {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background-color: #2196f3;
+      border-radius: 50%;
+      padding: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      z-index: 998;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .sticky-call:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    .sticky-call img {
+      width: 36px;
+      height: 36px;
+      display: block;
+    }
 
     @media (max-width: 768px) {
       .kategori-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: auto;
-}
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .kategori-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -303,13 +306,10 @@
     </div>
 
     <div class="hero-call">
-      <a href="tel:+905556936877" class="sticky-button sticky-call">
-  <img src="images/phone-icon.png" alt="Hemen Ara" />
-</a>
-
-<a href="https://wa.me/905556936877" class="sticky-button sticky-whatsapp" target="_blank">
-  <img src="images/whatsapp-icon_green.png" alt="WhatsApp Sipariş" />
-</a>
+      <a href="tel:+905556936877" class="btn phone">
+        <img src="phone-icon.png" alt="Telefon Icon" />
+        Hemen Ara
+      </a>
     </div>
   </div>
 </section>
@@ -384,49 +384,50 @@
 </footer>
 
 <!-- STICKY BUTONLAR -->
-<a href="tel:+905556936877" class="sticky-button sticky-call">
-  <img src="images/phone-icon.png" alt="Hemen Ara" />
+<a href="tel:+905556936877" class="sticky-call">
+  <img src="phone-icon.png" alt="Hemen Ara" />
 </a>
-<a href="https://wa.me/905556936877" class="sticky-button sticky-whatsapp" target="_blank">
-  <img src="images/whatsapp-icon_green.png" alt="WhatsApp Sipariş" />
+
+<a href="https://wa.me/905556936877" class="sticky-whatsapp" target="_blank">
+  <img src="whatsapp-icon.png" alt="WhatsApp Sipariş" />
 </a>
 
 <!-- JS -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const heroSection = document.getElementById("heroSection");
     const video = document.getElementById("heroVideo");
 
-    if (!video || !heroSection) return;
+    if (!video) return;
 
+    // Mobil cihazları tespit et
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     if (isMobile) {
-      // Mobilde video'yu kaldır, poster'ı arka plan olarak ata
-      video.remove();
-      heroSection.style.backgroundImage = "url('images/video-poster.jpg')";
-      heroSection.style.backgroundSize = "cover";
-      heroSection.style.backgroundPosition = "center";
-      heroSection.style.backgroundRepeat = "no-repeat";
-    } else {
-      // Masaüstü video kontrolü
-      video.addEventListener("loadedmetadata", function () {
-        video.currentTime = 30;
-      });
-
-      video.addEventListener("canplay", function () {
-        video.style.display = "block";
-        video.playbackRate = 1.5;
-        video.style.opacity = 0.4;
-        video.play().catch(e => console.warn("Autoplay error:", e));
-      });
-
-      video.addEventListener("timeupdate", function () {
-        if (video.currentTime >= 50) {
-          video.pause();
-        }
-      });
+      video.remove(); // mobilde video yüklenmesin
+      return;
     }
+
+    // Metadata yüklendiğinde videoyu 30. saniyeye al
+    video.addEventListener("loadedmetadata", function () {
+      video.currentTime = 30;
+    });
+
+    // Video oynatılabilir hale geldiğinde oynat
+    video.addEventListener("canplay", function () {
+      video.style.display = "block";
+      video.playbackRate = 1.5;
+      video.style.opacity = 0.4;
+
+      video.play().catch((e) => {
+        console.warn("Otomatik oynatma hatası:", e);
+      });
+    });
+
+    // 50. saniyeye gelince videoyu durdur
+    video.addEventListener("timeupdate", function () {
+      if (video.currentTime >= 50) {
+        video.pause();
+      }
+    });
   });
 </script>
 <script type="application/ld+json">
